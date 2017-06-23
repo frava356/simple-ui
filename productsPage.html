@@ -1,0 +1,230 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+			body{
+				background-color: #aaa;
+				margin: 10px 30px;
+				font-family: arial;
+			}
+			h2.brandname{
+				display: inline-block;
+			}
+			ul.menu_items_bar{
+				display: inline-block;
+				float: right;
+				margin-top: 26px;
+			}
+			ul.menu_items_bar a{
+				text-decoration: none;
+				color: #000;
+			}
+			ul.menu_items_bar a:hover{
+				text-decoration: underline;
+			}
+			ul.menu_items_bar li{
+				display: inline-block;
+				margin-right: 0;
+				margin: 0px 4px;
+			}
+			.filters{
+				margin-bottom: 15px;
+				font-size: 14px;
+			}
+			.clear{
+				clear: both;
+			}
+			#filtersBox span{
+				padding: 4px 10px;
+				border-radius: 15px;
+				color: #FFF;
+				margin-right: 5px;
+				text-transform: capitalize;
+				white-space: nowrap;
+			}
+			#productsBox{
+				text-align: center;
+				max-width: 1280px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.product-box{
+			    width: 22%;
+				min-width: 220px;
+				max-width: 300px;
+				display: inline-block;
+				margin: 8px;
+				background: white;
+				font-family: arial;
+			}
+			.product-image{
+				background-color: #777;
+				width: 100%;
+				min-height: 160px;
+			}
+			.product-name{
+				text-transform: capitalize;
+				padding: 0px 20px;
+				text-align: left;
+			}
+			.product-box p{
+				padding: 0px 20px;
+				text-align: left;
+				font-size: 13px;
+				line-height: 20px;
+			}
+			.product-box span.prod-type{
+				text-align: right;
+				padding: 5px 10px;
+				border-radius: 14px;
+				color: #FFF;
+				/* Dont like this method, but is faster */
+				float: right;
+				margin-right: 10px;
+				margin-top: -40px;
+			}
+			.moreInfo{
+				margin-bottom: 20px;
+				text-align: left;
+				padding: 0px 20px;
+			}
+			.fruit{ background-color: green; font-size:12px; }
+			.vegetable{ background-color: #ffbc00; font-size:12px; }
+			.meat{ background-color: #dc2323; font-size:12px; }
+			.moreInfo_fruit{ color: green; font-size: 26px; }
+			.moreInfo_vegetable{ color: #ffbc00; font-size: 26px; }
+			.moreInfo_meat{ color: #dc2323; font-size: 26px; }
+		</style>
+		<script type='text/javascript'>
+			// I will set here a simple array for products info as a fast-but-not-elegant way to access all the data I need
+			var array_products = [
+				{'name':'apple', 'type':'fruit', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras efficitur quis lacus et aliquam. Donec ut varius ante. Ut et lacus nisl. Donec maximus felis in nisl hendrerit, nec semper lectus blandit. Duis quis ultrices ex, ut dignissim lectus.'}, 
+				{'name':'aubergine', 'type':'vegetable', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras efficitur quis lacus et aliquam. Donec ut varius ante. Ut et lacus nisl. Donec maximus felis in nisl hendrerit, nec semper lectus blandit. Duis quis ultrices ex, ut dignissim lectus.'},
+				{'name':'banana', 'type':'fruit', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras efficitur quis lacus et aliquam. Donec ut varius ante. Ut et lacus nisl. Donec maximus felis in nisl hendrerit, nec semper lectus blandit. Duis quis ultrices ex, ut dignissim lectus.'},
+				{'name':'broccoli', 'type':'vegetable', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras efficitur quis lacus et aliquam. Donec ut varius ante. Ut et lacus nisl. Donec maximus felis in nisl hendrerit, nec semper lectus blandit. Duis quis ultrices ex, ut dignissim lectus.'},
+				{'name':'chicken', 'type':'meat', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras efficitur quis lacus et aliquam. Donec ut varius ante. Ut et lacus nisl. Donec maximus felis in nisl hendrerit, nec semper lectus blandit. Duis quis ultrices ex, ut dignissim lectus.'},
+				{'name':'orange', 'type':'fruit', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras efficitur quis lacus et aliquam. Donec ut varius ante. Ut et lacus nisl. Donec maximus felis in nisl hendrerit, nec semper lectus blandit. Duis quis ultrices ex, ut dignissim lectus.'},
+				{'name':'beef', 'type':'meat', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras efficitur quis lacus et aliquam. Donec ut varius ante. Ut et lacus nisl. Donec maximus felis in nisl hendrerit, nec semper lectus blandit. Duis quis ultrices ex, ut dignissim lectus.'},
+				{'name':'zucchini', 'type':'vegetable', 'description':'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras efficitur quis lacus et aliquam. Donec ut varius ante. Ut et lacus nisl. Donec maximus felis in nisl hendrerit, nec semper lectus blandit. Duis quis ultrices ex, ut dignissim lectus.'}
+			];
+			
+			/*
+			*	Shows a product box in the page given its information
+			*/
+			function showProductBox(product){
+				
+				var box = document.createElement("div");
+				box.className = 'product-box';
+				var image = document.createElement("div");		// Will be just a rectangle of dark grey
+				image.className = 'product-image';
+				var productName = document.createElement("h3");
+				productName.className = 'product-name';
+				productName.innerHTML = product['name'];
+				var productType = document.createElement("span");
+				productType.classList.add('prod-type', product['type']);
+				productType.innerHTML = product['type'];
+				var productSeparator = document.createElement("div");
+				productSeparator.className = 'clear';
+				var productDescription = document.createElement("p");
+				productDescription.innerHTML = product['description'];
+				var productMoreInfo = document.createElement("div");
+				productMoreInfo.className = "moreInfo";
+				productMoreInfo.innerHTML = "<span class='icon moreInfo_"+product['type']+"'> > </span> More info";
+				
+				box.appendChild(image);
+				box.appendChild(productName);
+				box.appendChild(productType);
+				box.appendChild(productSeparator);
+				box.appendChild(productDescription);
+				box.appendChild(productMoreInfo);
+				
+				// Finally we add the product to the view
+				document.getElementById('productsBox').appendChild(box);
+			
+			}
+			
+			/*
+			*	Shows a filter option in the filter section (wrote this one the easy way)
+			*/
+			function showProductFilter(filter){
+				var box = "<span class='"+filter+"'><input type='checkbox' class='"+filter+"' id='input_"+filter+"' checked onclick='showAllProducts();'>&nbsp;"+filter+"</span>";
+				document.getElementById('filtersBox').innerHTML += box;
+			}
+			
+			/*
+			*	Clears the products area and shows them again considering the checked filters
+			*/
+			function showAllProducts(){
+				
+				// First, we get active filters
+				var activeFilters = [];
+				var filters = document.getElementById('filtersBox').childNodes;
+				for(var i=0; i < filters.length; ++i){
+					if(filters[i].childNodes[0].checked){
+						activeFilters.push(filters[i].childNodes[0].className);
+					}
+				}
+				
+				// Second, we clear the product box
+				document.getElementById('productsBox').innerHTML = '';
+				
+				// Third, we add all the products that matches
+				for(var i=0; i < array_products.length; ++i){
+			
+					// Will only show the product if its type is in the active filters
+					if( activeFilters.indexOf(array_products[i]['type']) >= 0 ){
+						showProductBox(array_products[i]);
+					}
+					
+				}
+				
+				
+			}
+			
+		</script>
+
+	</head>
+	<body>
+		
+		<h2 class="brandname">Brandname</h2>
+		<ul class="menu_items_bar">
+			<li><a href='#'>Menu Item 1</a></li>
+			<li><a href='#'>Menu Item 2</a></li>
+			<li><a href='#'>Menu Item 3</a></li>
+			<li><a href='#'>Menu Item 4</a></li>
+			<li><a href='#'>Menu Item 5</a></li>
+			<li><a href='#'>Menu Item 6</a></li>
+		</ul>
+		<div class="clear"></div>
+		<div class="filters">
+			Filter: <span id="filtersBox"></span>
+		</div>
+		<div id='productsBox'>
+		</div>
+
+		
+		<script type="text/javascript">
+			// First view of the page (all the products, filters ready to take action)
+			(function() {
+				var filters = [];
+				for(var i=0; i < array_products.length; ++i){
+					
+					// Add every kind of product to the possible filters
+					if( filters.indexOf(array_products[i]['type']) < 0 ){
+						filters.push(array_products[i]['type'] );
+					}
+
+					showProductBox(array_products[i]);
+					
+				}
+				
+				for(var i=0; i < filters.length; ++i){
+					showProductFilter(filters[i]);
+				}
+				
+				showAllProducts();
+
+			})();
+		</script>
+	</body>
+</html>
